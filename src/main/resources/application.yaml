@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: rxkafka
+
+  kafka:
+    properties:
+      spring:
+        json:
+          trusted:
+            packages: '*'
+
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: my-group
+      properties:
+        reactiveAutoCommit: true
+
+  cloud:
+    stream:
+      default-binder: reactorKafka
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        default:
+          content-type: application/json
+        processStockPrices-in-0:
+          destination: stock-prices-in
+          group: live-stock-consumers-x
+        processStockPrices-out-0:
+          destination: stock-prices-out
+          group: live-stock-consumers-y
+          producer:
+            useNativeEncoding: true
+  r2dbc:
+    url: r2dbc:clickhouse:http://default:@localhost:8123/stockdb
+clickhouse:
+  host: localhost
+  port: 8123
+  database: stockdb
+  user: default
+  password: ""

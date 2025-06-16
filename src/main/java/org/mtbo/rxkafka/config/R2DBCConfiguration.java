@@ -1,5 +1,11 @@
-package org.mtbo.rxkafka.config;
+/*
+ * Copyright (c) 2025. Vladimir E. Koltunov, mtbo.org
+ * Please see the AUTHORS file for details.
+ * All rights reserved. Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
 
+package org.mtbo.rxkafka.config;
 
 import static io.r2dbc.spi.ConnectionFactories.get;
 import static java.lang.String.format;
@@ -29,7 +35,9 @@ public class R2DBCConfiguration {
 
   @Bean
   public ConnectionFactory connectionFactory() {
-    return get(format("r2dbc:clickhouse:http://%s:%s@%s:%d/%s", user, password,
-            host, Integer.parseInt(port), database));
+    return get(
+        format(
+            "r2dbc:clickhouse:http://%s:%s@%s:%d/%s",
+            user, password, host, Integer.parseInt(port), database));
   }
 }
